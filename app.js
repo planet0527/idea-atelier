@@ -32,16 +32,17 @@
     $('#home-view').hidden=false;$('#shared-view').hidden=true;
     const query=$('#search').value.trim().toLowerCase();$('#clear-search').hidden=!query;
     let ideas=[...state.ideas];
+    if(currentView==='archived')ideas=ideas.filter(x=>x.archived);else ideas=ideas.filter(x=>!x.archived);
     if(currentView==='favorites')ideas=ideas.filter(x=>x.favorite);
     if(currentView==='shared')ideas=ideas.filter(x=>x.shared);
     if(collectionFilter)ideas=ideas.filter(x=>x.collection===collectionFilter);
     if(currentFilter!=='all')ideas=ideas.filter(x=>x.status===currentFilter);
     if(query)ideas=ideas.filter(x=>{const collectionName=state.collections.find(c=>c.id===x.collection)?.name||'';const taskText=(Array.isArray(x.tasks)?x.tasks:[]).map(task=>task?.text||'').join(' ');const noteText=(Array.isArray(x.notes)?x.notes:[]).map(note=>note?.text||'').join(' ');return [x.name,x.description,x.problem,x.impact,x.step,x.needs,taskText,noteText,x.category,labels[x.status],collectionName].join(' ').toLowerCase().includes(query);});
     ideas.sort((a,b)=>sortNewest?new Date(b.updated)-new Date(a.updated):new Date(a.updated)-new Date(b.updated));
-    $('#idea-count').textContent=state.ideas.length;$('#result-count').textContent=`${ideas.length}件`;$('#result-count').setAttribute('aria-label',`全${state.ideas.length}件中 ${ideas.length}件を表示`);
-    const navTitle=currentView==='favorites'?'お気に入り':currentView==='shared'?'共有したアイデア':collectionFilter?(state.collections.find(x=>x.id===collectionFilter)?.name||'コレクション'):'アイデア帳';
-    $('#crumb-label').textContent=navTitle;$('#list-heading').textContent=collectionFilter?navTitle:currentView==='favorites'?'お気に入りのアイデア':currentView==='shared'?'共有したアイデア':currentFilter==='all'?'すべてのアイデア':labels[currentFilter]+'アイデア';
-    $('#list-subtitle').textContent=currentView==='shared'?'これまでに共有リンクを作ったアイデア。':'思いついたことを、忘れないうちに。';renderNextActions();
+    $('#idea-count').textContent=state.ideas.filter(x=>!x.archived).length;$('#archive-count').textContent=state.ideas.filter(x=>x.archived).length;$('#result-count').textContent=`${ideas.length}件`;$('#result-count').setAttribute('aria-label',`全${state.ideas.length}件中 ${ideas.length}件を表示`);
+    const navTitle=currentView==='archived'?'アーカイブ':currentView==='favorites'?'お気に入り':currentView==='shared'?'共有したアイデア':collectionFilter?(state.collections.find(x=>x.id===collectionFilter)?.name||'コレクション'):'アイデア帳';
+    $('#crumb-label').textContent=navTitle;$('#list-heading').textContent=collectionFilter?navTitle:currentView==='archived'?'アーカイブ':currentView==='favorites'?'お気に入りのアイデア':currentView==='shared'?'共有したアイデア':currentFilter==='all'?'すべてのアイデア':labels[currentFilter]+'アイデア';
+    $('#list-subtitle').textContent=currentView==='archived'?'通常の一覧からしまったアイデア。編集画面からいつでも戻せます。':currentView==='shared'?'これまでに共有リンクを作ったアイデア。':'思いついたことを、忘れないうちに。';renderNextActions();
     const grid=$('#idea-grid');grid.innerHTML='';
     ideas.forEach(item=>{
       const card=document.createElement('article');card.className='idea-card';card.tabIndex=0;card.setAttribute('aria-label',item.name+'を編集');
@@ -87,7 +88,7 @@
   function openIdea(ideaId=null){
     const item=ideaId?state.ideas.find(x=>x.id===ideaId):null;activeIdea=item?.id||null;
     $('#form-title').textContent=item?'アイデアを編集する':'アイデアを記録する';$('#idea-id').value=item?.id||'';
-    renderTaskEditor(Array.isArray(item?.tasks)?item.tasks:[]);renderIdeaNotes(Array.isArray(item?.notes)?item.notes:[]);$('#idea-note').value='';$('#idea-name').value=item?.name||'';$('#idea-category').value=item?.category||'アプリ・Web';$('#idea-status').value=item?.status||'seed';$('#idea-description').value=item?.description||'';$('#idea-problem').value=item?.problem||'';$('#idea-impact').value=item?.impact||'';$('#idea-step').value=item?.step||'';$('#idea-needs').value=item?.needs||'';$('#idea-favorite').checked=!!item?.favorite;$('#idea-collection').value=item?.collection||'';$('#delete-idea').hidden=!item;ideaBaseline=ideaFormSnapshot();
+    renderTaskEditor(Array.isArray(item?.tasks)?item.tasks:[]);renderIdeaNotes(Array.isArray(item?.notes)?item.notes:[]);$('#idea-note').value='';$('#idea-name').value=item?.name||'';$('#idea-category').value=item?.category||'アプリ・Web';$('#idea-status').value=item?.status||'seed';$('#idea-description').value=item?.description||'';$('#idea-problem').value=item?.problem||'';$('#idea-impact').value=item?.impact||'';$('#idea-step').value=item?.step||'';$('#idea-needs').value=item?.needs||'';$('#idea-favorite').checked=!!item?.favorite;$('#idea-archived').checked=!!item?.archived;$('#idea-archived').disabled=!item;$('#idea-archived').closest('label').hidden=!item;$('#idea-collection').value=item?.collection||'';$('#delete-idea').hidden=!item;ideaBaseline=ideaFormSnapshot();
     $('#idea-dialog').showModal();
   }
   function closeDialog(sel){$(sel).close();}
@@ -99,12 +100,12 @@
     history.hidden=!entries.length;summary.textContent='これまでのメモ ('+entries.length+')';list.innerHTML='';
     entries.slice().reverse().forEach(note=>{const article=document.createElement('article');article.className='idea-note-entry';const time=document.createElement('time');if(note.created){time.dateTime=note.created;const date=new Date(note.created);time.textContent=Number.isNaN(date.getTime())?'日付不明':new Intl.DateTimeFormat('ja-JP',{year:'numeric',month:'short',day:'numeric'}).format(date);}else{time.textContent='日付不明';}const text=document.createElement('p');text.textContent=note.text;article.append(time,text);list.append(article);});
   }
-  function ideaFormSnapshot(){return JSON.stringify({tasks:readTasks(),note:$('#idea-note').value,name:$('#idea-name').value,category:$('#idea-category').value,status:$('#idea-status').value,description:$('#idea-description').value,problem:$('#idea-problem').value,impact:$('#idea-impact').value,step:$('#idea-step').value,needs:$('#idea-needs').value,collection:$('#idea-collection').value,favorite:$('#idea-favorite').checked});}
+  function ideaFormSnapshot(){return JSON.stringify({tasks:readTasks(),note:$('#idea-note').value,name:$('#idea-name').value,category:$('#idea-category').value,status:$('#idea-status').value,description:$('#idea-description').value,problem:$('#idea-problem').value,impact:$('#idea-impact').value,step:$('#idea-step').value,needs:$('#idea-needs').value,collection:$('#idea-collection').value,favorite:$('#idea-favorite').checked,archived:$('#idea-archived').checked});}
   function closeIdeaDialog(){if(ideaFormSnapshot()!==ideaBaseline&&!confirm('保存していない変更があります。破棄して閉じますか？'))return;closeDialog('#idea-dialog');}
   function saveIdea(e){
     e.preventDefault();const old=state.ideas.find(x=>x.id===$('#idea-id').value);const now=new Date().toISOString();
-    const item={id:old?.id||id(),name:$('#idea-name').value.trim(),category:$('#idea-category').value,status:$('#idea-status').value,description:$('#idea-description').value.trim(),problem:$('#idea-problem').value.trim(),impact:$('#idea-impact').value.trim(),step:$('#idea-step').value.trim(),needs:$('#idea-needs').value.trim(),tasks:readTasks(),notes:Array.isArray(old?.notes)?old.notes:[],favorite:$('#idea-favorite').checked,collection:$('#idea-collection').value,shared:!!old?.shared,created:old?.created||now,updated:now};
-    const draftNote=$('#idea-note').value.trim();if(draftNote)item.notes.push({text:draftNote,created:now});if(old)Object.assign(old,item);else state.ideas.unshift(item);persist();closeDialog('#idea-dialog');render();toast(old?'アイデアを更新しました':'アイデアを記録しました');
+    const item={id:old?.id||id(),name:$('#idea-name').value.trim(),category:$('#idea-category').value,status:$('#idea-status').value,description:$('#idea-description').value.trim(),problem:$('#idea-problem').value.trim(),impact:$('#idea-impact').value.trim(),step:$('#idea-step').value.trim(),needs:$('#idea-needs').value.trim(),tasks:readTasks(),notes:Array.isArray(old?.notes)?old.notes:[],favorite:$('#idea-favorite').checked,archived:$('#idea-archived').checked,collection:$('#idea-collection').value,shared:!!old?.shared,created:old?.created||now,updated:now};
+    const draftNote=$('#idea-note').value.trim();if(draftNote)item.notes.push({text:draftNote,created:now});const archiveChanged=!!old?.archived!==!!item.archived;if(old)Object.assign(old,item);else state.ideas.unshift(item);persist();closeDialog('#idea-dialog');render();toast(old?archiveChanged?(item.archived?'アーカイブしました':'アーカイブから戻しました'):'アイデアを更新しました':'アイデアを記録しました');
   }
   function deleteIdea(){
     const index=state.ideas.findIndex(x=>x.id===activeIdea),item=state.ideas[index];if(!item)return;
