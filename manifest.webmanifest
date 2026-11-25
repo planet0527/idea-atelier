@@ -1,0 +1,19 @@
+{
+  "name": "Idea Atelier — 思いつきを、実現できる形へ",
+  "short_name": "Idea Atelier",
+  "description": "思いつきを記録し、実現への一歩を育てるアイデア帳。",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f6f2",
+  "theme_color": "#f7f6f2",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
