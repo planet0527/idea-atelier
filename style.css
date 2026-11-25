@@ -27,3 +27,32 @@
 .card-step{display:flex;align-items:flex-start;gap:7px;margin:11px 0 0;padding:8px 9px;border-radius:7px;background:#f1f4ee;color:#5f6e5d;font-size:9px;line-height:1.6}.card-step b{flex:0 0 auto;font-size:8px;color:#71856f}.card-step span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal}.idea-card:has(.card-step){min-height:202px}
 @media(max-width:430px){body{min-width:0}}
 .share-link-field{margin-top:10px}.share-link-field[hidden]{display:none}.share-link-field label{display:block;margin:2px 0 6px;font-size:9px;color:#70766d}.share-link-field textarea{display:block;width:100%;resize:vertical;min-height:60px;padding:9px;border:1px solid #dfe3d9;border-radius:6px;background:#fffefa;color:#60665e;font:10px/1.6 'DM Sans','Noto Sans JP',sans-serif;overflow-wrap:anywhere;word-break:break-all}
+
+/* Mobile usability: keep controls readable and easy to tap without causing horizontal overflow. */
+@media(max-width:760px){
+  .topbar{padding-inline:14px}.breadcrumb{font-size:10px;letter-spacing:.7px}.breadcrumb b{font-size:12px}
+  .avatar{width:40px;height:40px;font-size:13px}
+  .view{padding:28px 14px 24px}.eyebrow{font-size:10px;letter-spacing:1.4px}.intro{font-size:13px;line-height:1.7}
+  .filter{min-height:40px;padding:9px 10px;font-size:12px}
+  .search-box{height:44px}.search-box input{font-size:16px}
+  .primary-button,.secondary-button{min-height:44px;padding:11px 13px;font-size:13px}
+  .sort-button{min-height:44px;font-size:12px;white-space:nowrap}
+  .section-heading{gap:10px;align-items:center}.section-heading h2{font-size:19px}.section-heading p{font-size:12px;line-height:1.5}
+  .category-pill{font-size:11px}.idea-card h3{font-size:16px;line-height:1.5;overflow-wrap:anywhere}.card-desc{font-size:13px;line-height:1.65}
+  .status,.card-date{font-size:11px}.favorite-button{width:40px;height:40px}.card-share{min-height:40px;padding:6px 8px;font-size:12px}
+  .mobile-collection-tools{gap:8px}.mobile-collection-tools select{height:44px;font-size:14px}.mobile-collection-tools button{width:44px;height:44px;font-size:20px}
+  .sidebar .side-nav .nav-item,.sidebar .side-nav .nav-item:not(.active){min-height:44px;font-size:11px}
+  .modal{width:calc(100% - 16px);max-height:calc(100dvh - 16px)}.modal form{padding:20px 16px 18px}
+  .modal-head{margin-bottom:16px}.modal-head h2{font-size:21px}.icon-button{width:44px;height:44px}
+  .field-label{font-size:13px;line-height:1.5}.field-label>span{font-size:11px}
+  .field-label input,.field-label textarea,.field-label select{min-height:44px;padding:10px 11px;font-size:16px}
+  .field-label textarea{min-height:90px}.plan-details{padding:12px 11px 4px}.plan-details summary{min-height:40px;font-size:13px}
+  .form-bottom{font-size:12px}.favorite-check{min-height:40px;font-size:12px}
+  .modal-actions button{min-height:44px;font-size:13px}
+  .share-modal{padding:20px 16px 18px}.modal-lead{font-size:12px;line-height:1.6}.share-section-title b{font-size:13px}.share-section-title small{font-size:11px}
+  .toggle-line{min-height:44px}.toggle-line b{font-size:12px}.toggle-line small{font-size:11px}.share-actions button{min-height:44px;font-size:13px}
+}
+@media(max-width:430px){
+  .view{padding-inline:12px}.filter{padding-inline:9px}.section-heading{align-items:flex-start}.section-heading p{max-width:170px}
+  .modal-actions{gap:8px}.modal-actions .primary-button,.modal-actions .secondary-button{padding-inline:12px}
+}
