@@ -1,5 +1,6 @@
 (() => {
   'use strict';
+  if('serviceWorker' in navigator&&location.protocol==='https:'){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js',{scope:'./'}).catch(()=>{}));}
   const STORE = 'idea-atelier-v1';
   const labels = {seed:'芽が出た',growing:'育て中',ready:'実現したい',done:'実現した'};
   const colors = {'アプリ・Web':'','作品・創作':'peach','暮らし':'yellow','イベント':'lav','学び':'','その他':'peach'};
