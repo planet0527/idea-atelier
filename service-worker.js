@@ -1,10 +1,10 @@
-const CACHE_NAME='idea-atelier-shell-v1';
+const CACHE_NAME='idea-atelier-shell-v2';
 const CORE_ASSETS=[
   './',
   './index.html',
   './manifest.webmanifest',
   './icon.svg',
-  './style.css?v=18',
+  './style.css?v=19',
   './app.js?v=16'
 ].map(path=>new URL(path,self.registration.scope).toString());
 
