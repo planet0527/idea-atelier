@@ -20,7 +20,7 @@
   function renderCollections(){
     const wrap=$('#collections');wrap.innerHTML='';
     state.collections.forEach(c=>{const b=document.createElement('button');b.className='collection-link';b.innerHTML=`<i></i>${escapeHtml(c.name)}`;b.addEventListener('click',()=>{collectionFilter=c.id;currentView='all';setActiveNav();render();});wrap.append(b);});
-    const select=$('#idea-collection');select.innerHTML='<option value="">未分類</option>'+state.collections.map(c=>`<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join('');
+    const select=$('#idea-collection');select.innerHTML='<option value="">未分類</option>'+state.collections.map(c=>`<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join('');const mobile=$('#mobile-collection-filter');mobile.innerHTML='<option value="">すべてのコレクション</option>'+state.collections.map(c=>`<option value="${escapeHtml(c.id)}">${escapeHtml(c.name)}</option>`).join('');mobile.value=collectionFilter;
   }
   function render(){
     if(location.hash.startsWith('#share=')){renderShared();return;}
@@ -43,10 +43,10 @@
       const short=(item.description||item.problem||'まだ説明はありません。').replace(/\s+/g,' ').trim();
       card.innerHTML=`<div class="card-top"><span class="category-pill ${colors[item.category]||''}">${escapeHtml(item.category||'その他')}</span><button class="favorite-button ${item.favorite?'on':''}" aria-label="お気に入り">${item.favorite?'♥':'♡'}</button></div><h3>${escapeHtml(item.name)}</h3><p class="card-desc">${escapeHtml(short)}</p><div class="card-bottom"><span class="status ${escapeHtml(item.status)}">${labels[item.status]||'芽が出た'}</span><span class="card-date">${dateText(item.updated)}</span></div><button class="card-share" aria-label="共有設定">↗ ${item.shared?'共有済み':'共有する'}</button>`;
       card.addEventListener('click',e=>{if(e.target.closest('.favorite-button')){e.stopPropagation();item.favorite=!item.favorite;persist();render();return;}if(e.target.closest('.card-share')){e.stopPropagation();openShare(item);return;}openIdea(item.id);});
-      card.addEventListener('keydown',e=>{if(e.key==='Enter')openIdea(item.id);});
+      card.addEventListener('keydown',e=>{if(e.target!==card)return;if(e.key==='Enter'||e.key===' '){e.preventDefault();openIdea(item.id);}});
       grid.append(card);
     });
-    $('#empty-state').hidden=ideas.length>0;
+    const empty=ideas.length===0;$('#empty-state').hidden=!empty;const hasConditions=!!query||currentFilter!=='all'||!!collectionFilter||currentView!=='all';if(empty){$('#empty-title').textContent=hasConditions?'条件に合うアイデアはありません':'最初のひらめきを書き留めよう';$('#empty-message').textContent=hasConditions?'検索語や絞り込み条件を変えてみてください。':'まとまっていなくても大丈夫。あとから一緒に形にできます。';$('#empty-new').hidden=hasConditions;$('#empty-reset').hidden=!hasConditions;}
     renderCollections();
   }
   function setActiveNav(){
@@ -110,7 +110,7 @@
   $$('.filter').forEach(b=>b.addEventListener('click',()=>{currentFilter=b.dataset.filter;setActiveNav();render();}));
   $('#new-idea').addEventListener('click',()=>openIdea());$('#empty-new').addEventListener('click',()=>openIdea());$('#idea-form').addEventListener('submit',saveIdea);
   $$('.close-dialog').forEach(b=>b.addEventListener('click',()=>closeDialog('#idea-dialog')));$('#delete-idea').addEventListener('click',deleteIdea);
-  $('#search').addEventListener('input',render);$('#sort-button').addEventListener('click',()=>{sortNewest=!sortNewest;$('#sort-button').textContent=sortNewest?'最近更新した順⌄':'古い順⌃';render();});
+  $('#search').addEventListener('input',render);$('#mobile-collection-filter').addEventListener('change',e=>{collectionFilter=e.target.value;currentView='all';setActiveNav();render();});$('#mobile-add-collection').addEventListener('click',()=>$('#collection-dialog').showModal());$('#empty-reset').addEventListener('click',()=>{$('#search').value='';currentView='all';currentFilter='all';collectionFilter='';setActiveNav();render();});$('.avatar').addEventListener('click',()=>$('#settings-dialog').showModal());$('#close-settings').addEventListener('click',()=>$('#settings-dialog').close());$('#settings-export').addEventListener('click',()=>{$('#settings-dialog').close();exportData();});$('#settings-import').addEventListener('click',()=>{$('#settings-dialog').close();$('#file-input').click();});$('#settings-collection').addEventListener('click',()=>{$('#settings-dialog').close();$('#collection-dialog').showModal();});$('#sort-button').addEventListener('click',()=>{sortNewest=!sortNewest;$('#sort-button').textContent=sortNewest?'最近更新した順⌄':'古い順⌃';render();});
   $('#add-collection').addEventListener('click',()=>$('#collection-dialog').showModal());$$('.close-collection').forEach(b=>b.addEventListener('click',()=>$('#collection-dialog').close()));$('#collection-form').addEventListener('submit',addCollection);
   $('#export-data').addEventListener('click',exportData);$('#import-data').addEventListener('click',()=>$('#file-input').click());$('#file-input').addEventListener('change',e=>{if(e.target.files[0])importData(e.target.files[0]);e.target.value='';});
   $$('.close-share').forEach(b=>b.addEventListener('click',()=>$('#share-dialog').close()));$$('[data-share],#share-show-alias,#share-show-area,#share-alias,#share-area,#share-title,#share-redactions,#share-mask-contacts').forEach(el=>el.addEventListener('input',updatePreview));$$('[data-share],#share-show-alias,#share-show-area,#share-mask-contacts').forEach(el=>el.addEventListener('change',updatePreview));
