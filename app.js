@@ -108,7 +108,7 @@
     }if(!Array.isArray(data.ideas))throw Error();if(!confirm('読み込んだ内容で、現在のアイデア帳を置き換えますか？'))return;state.ideas=data.ideas;state.collections=Array.isArray(data.collections)?data.collections:[];persist();render();toast('データを読み込みました');}catch(e){alert('このファイルはアイデア帳の共有データまたはバックアップとして読み込めませんでした。');}};reader.readAsText(file);}
   function addCollection(e){e.preventDefault();const name=$('#collection-name').value.trim();if(!name)return;state.collections.push({id:id(),name});persist();$('#collection-dialog').close();$('#collection-name').value='';render();toast('コレクションを追加しました');}
 
-  $$('.nav-item[data-view]').forEach(b=>b.addEventListener('click',()=>{currentView=b.dataset.view;collectionFilter='';setActiveNav();render();}));
+  $('.nav-item[data-view]').forEach(b=>b.addEventListener('click',()=>{if(location.hash.startsWith('#share='))location.hash='#home';currentView=b.dataset.view;collectionFilter='';setActiveNav();render();}));
   $$('.filter').forEach(b=>b.addEventListener('click',()=>{currentFilter=b.dataset.filter;setActiveNav();render();}));
   $('#new-idea').addEventListener('click',()=>openIdea());$('#empty-new').addEventListener('click',()=>openIdea());$('#idea-form').addEventListener('submit',saveIdea);
   $('.close-dialog').forEach(b=>b.addEventListener('click',closeIdeaDialog));$('#idea-dialog').addEventListener('cancel',e=>{e.preventDefault();closeIdeaDialog();});$('#delete-idea').addEventListener('click',deleteIdea);
