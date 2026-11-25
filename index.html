@@ -23,7 +23,7 @@
   <meta name="twitter:description" content="ひらめきを記録して、実現への小さな一歩を育てるアイデア帳。">
   <meta name="twitter:image" content="https://planet0527.github.io/idea-atelier/og-image.svg">
   <title>Idea Atelier — 思いつきを、実現できる形へ</title>
-  <link rel="stylesheet" href="style.css?v=13">
+  <link rel="stylesheet" href="style.css?v=14">
 </head>
 <body>
   <div class="app-shell">
@@ -59,7 +59,7 @@
         </div>
         <div class="toolbar"><div class="filters"><button class="filter active" data-filter="all">すべて</button><button class="filter" data-filter="seed">芽が出た</button><button class="filter" data-filter="growing">育て中</button><button class="filter" data-filter="ready">実現したい</button><button class="filter" data-filter="done">実現した</button></div><div class="toolbar-right"><label class="search-box"><span>⌕</span><input id="search" type="search" placeholder="アイデアを検索" aria-label="アイデアを検索"><button type="button" id="clear-search" class="clear-search" aria-label="検索をクリア" title="検索をクリア" hidden>×</button></label><button class="primary-button" id="new-idea"><span>＋</span> アイデアを記録</button></div></div><div class="mobile-collection-tools"><select id="mobile-collection-filter" aria-label="コレクションで絞り込む"><option value="">すべてのコレクション</option></select><button id="mobile-add-collection" type="button" aria-label="コレクションを追加">＋</button></div>
         <div class="section-heading"><div><h2 id="list-heading">すべてのアイデア</h2><p id="list-subtitle">思いついたことを、忘れないうちに。</p></div><div class="section-tools"><span id="result-count" class="result-count" aria-live="polite" aria-label="アイデアの表示件数">0件</span><button class="sort-button" id="sort-button">最近更新した順⌄</button></div></div>
-        <section id="next-actions" class="next-actions" hidden aria-labelledby="next-actions-title"><div class="next-actions-heading"><div><h3 id="next-actions-title">次にやること</h3><p>アイデアごとの未完了ステップから、すぐ進められる一歩を表示します。</p></div></div><div id="next-action-list" class="next-action-list"></div><p id="next-actions-more" class="next-actions-more" hidden></p></section>
+        <section id="next-actions" class="next-actions" hidden aria-labelledby="next-actions-title"><div class="next-actions-heading"><div><h3 id="next-actions-title">次にやること</h3><p>次の一歩と実現ステップをまとめて確認し、ここから完了できます。</p></div></div><div id="next-action-list" class="next-action-list"></div><p id="next-actions-more" class="next-actions-more" type="button" hidden></button></section>
         <div id="idea-grid" class="idea-grid"></div>
         <div id="empty-state" class="empty-state" hidden><div class="empty-art">✳</div><h3 id="empty-title">最初のひらめきを書き留めよう</h3><p id="empty-message">まとまっていなくても大丈夫。あとから一緒に形にできます。</p><button class="primary-button" id="empty-new">＋ アイデアを記録</button><button class="secondary-button" id="empty-reset" hidden>条件をクリア</button></div>
         <footer class="page-footer"><span>IDEA ATELIER</span><span>小さな一歩から、未来をつくる。</span></footer>
@@ -94,6 +94,6 @@
   <dialog id="settings-dialog" class="modal small-modal"><div class="modal-head"><div><div class="eyebrow">YOUR SPACE</div><h2>メニュー</h2></div><button type="button" class="icon-button" id="close-settings" aria-label="閉じる">×</button></div><p class="settings-note">アイデアはこの端末のブラウザに保存されます。別の端末へ移すときは、データを書き出してください。</p><div class="settings-actions"><button class="secondary-button" id="settings-export" type="button">⇩ データを書き出す</button><button class="secondary-button" id="settings-import" type="button">⇧ データを読み込む</button><button class="secondary-button" id="settings-collection" type="button">＋ コレクションを追加</button></div></dialog>
   <input type="file" id="file-input" accept="application/json,.json" hidden>
   <div id="toast" role="status" class="toast"></div>
-  <script src="app.js?v=10"></script>
+  <script src="app.js?v=11"></script>
 </body>
 </html>
