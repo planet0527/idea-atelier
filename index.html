@@ -23,7 +23,7 @@
   <meta name="twitter:description" content="ひらめきを記録して、実現への小さな一歩を育てるアイデア帳。">
   <meta name="twitter:image" content="https://planet0527.github.io/idea-atelier/og-image.svg">
   <title>Idea Atelier — 思いつきを、実現できる形へ</title>
-  <link rel="stylesheet" href="style.css?v=15">
+  <link rel="stylesheet" href="style.css?v=16">
 </head>
 <body>
   <div class="app-shell">
@@ -34,9 +34,10 @@
       </a>
       <div class="side-label">YOUR WORKSPACE</div>
       <nav class="side-nav" aria-label="メインナビゲーション">
-        <button class="nav-item active" data-view="all"><span>▦</span> アイデア帳 <em id="idea-count">0</em></button>
-        <button class="nav-item" data-view="favorites"><span>♡</span> お気に入り</button>
-        <button class="nav-item" data-view="shared"><span>↗</span> 共有したアイデア</button>
+        <button class="nav-item active" data-view="all" aria-label="アイデア帳" title="アイデア帳"><span aria-hidden="true">▦</span><span class="nav-label">アイデア帳</span><em id="idea-count">0</em></button>
+        <button class="nav-item" data-view="favorites" aria-label="お気に入り" title="お気に入り"><span aria-hidden="true">♡</span><span class="nav-label">お気に入り</span></button>
+        <button class="nav-item" data-view="shared" aria-label="共有したアイデア" title="共有したアイデア"><span aria-hidden="true">↗</span><span class="nav-label">共有したアイデア</span></button>
+        <button class="nav-item" data-view="archived" aria-label="アーカイブ" title="アーカイブ"><span aria-hidden="true">▣</span><span class="nav-label">アーカイブ</span><em id="archive-count">0</em></button>
       </nav>
       <div class="side-label collection-label">COLLECTIONS <button id="add-collection" title="コレクションを追加">＋</button></div>
       <div id="collections" class="collections"></div>
@@ -81,7 +82,7 @@
     <label class="field-label">誰の、どんな困りごとを解決する？<textarea id="idea-problem" rows="2" placeholder="自分や誰かが感じている不便・願い"></textarea></label>
     <label class="field-label">実現したら、どうなる？<textarea id="idea-impact" rows="2" placeholder="このアイデアが形になったときに起きること"></textarea></label>
     <details class="plan-details"><summary>実現への小さな一歩を考える <span>任意</span></summary><label class="field-label">まず試してみること<input id="idea-step" maxlength="150" placeholder="例：使う人になりそうな友達に話を聞く"></label><label class="field-label">必要なもの・協力してほしいこと<textarea id="idea-needs" rows="2" placeholder="スキル、道具、仲間、予算など"></textarea></label><div class="task-list-field"><div class="task-list-heading"><div><b>実現ステップ</b><small>作業を小さく分けて、終わったらチェック</small></div><button type="button" id="add-task" class="secondary-button">＋ 追加</button></div><div id="idea-task-list" class="task-list"></div></div><div class="private-notes-field"><div class="private-notes-heading"><b>進捗メモ</b><small>試したことや気づきを記録します。共有リンクには含まれません。</small></div><label class="field-label">今回のメモ<textarea id="idea-note" rows="2" maxlength="500" placeholder="例：友達に聞いたら、通知より記録の簡単さが大事だと分かった"></textarea></label><details id="idea-note-history" class="idea-note-history" hidden><summary id="idea-note-summary">これまでのメモ</summary><div id="idea-note-list" class="idea-note-list"></div></details></div></details>
-    <div class="form-bottom"><label class="collection-select">コレクション<select id="idea-collection"><option value="">未分類</option></select></label><label class="favorite-check"><input type="checkbox" id="idea-favorite"> お気に入り</label></div>
+    <div class="form-bottom"><label class="collection-select">コレクション<select id="idea-collection"><option value="">未分類</option></select></label><label class="favorite-check"><input type="checkbox" id="idea-favorite"> お気に入り</label><label class="archive-check"><input type="checkbox" id="idea-archived"> アーカイブ（一覧から隠す）</label></div>
     <div class="modal-actions"><button type="button" class="text-button delete-button" id="delete-idea" hidden>削除</button><span></span><button type="button" class="secondary-button close-dialog">キャンセル</button><button class="primary-button" type="submit">保存する</button></div>
   </form></dialog>
 
@@ -94,6 +95,6 @@
   <dialog id="settings-dialog" class="modal small-modal"><div class="modal-head"><div><div class="eyebrow">YOUR SPACE</div><h2>メニュー</h2></div><button type="button" class="icon-button" id="close-settings" aria-label="閉じる">×</button></div><p class="settings-note">アイデアはこの端末のブラウザに保存されます。別の端末へ移すときは、データを書き出してください。</p><div class="settings-actions"><button class="secondary-button" id="settings-export" type="button">⇩ データを書き出す</button><button class="secondary-button" id="settings-import" type="button">⇧ データを読み込む</button><button class="secondary-button" id="settings-collection" type="button">＋ コレクションを追加</button></div></dialog>
   <input type="file" id="file-input" accept="application/json,.json" hidden>
   <div id="toast" role="status" class="toast"></div>
-  <script src="app.js?v=12"></script>
+  <script src="app.js?v=13"></script>
 </body>
 </html>
