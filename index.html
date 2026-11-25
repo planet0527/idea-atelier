@@ -23,7 +23,7 @@
   <meta name="twitter:description" content="ひらめきを記録して、実現への小さな一歩を育てるアイデア帳。">
   <meta name="twitter:image" content="https://planet0527.github.io/idea-atelier/og-image.svg">
   <title>Idea Atelier — 思いつきを、実現できる形へ</title>
-  <link rel="stylesheet" href="style.css?v=17">
+  <link rel="stylesheet" href="style.css?v=18">
 </head>
 <body>
   <div class="app-shell">
@@ -78,6 +78,7 @@
     <input type="hidden" id="idea-id">
     <label class="field-label">アイデアの名前 <span>必須</span><input id="idea-name" maxlength="80" required placeholder="例：気持ちを言葉にする小さなアプリ"></label>
     <div class="form-grid"><label class="field-label">カテゴリー<select id="idea-category"><option>アプリ・Web</option><option>作品・創作</option><option>暮らし</option><option>イベント</option><option>学び</option><option>その他</option></select></label><label class="field-label">今の状態<select id="idea-status"><option value="seed">芽が出た</option><option value="growing">育て中</option><option value="ready">実現したい</option><option value="done">実現した</option></select></label></div>
+    <details class="writing-guide"><summary>書き方の例を見る（任意）</summary><p class="writing-guide-note">例をヒントに、自由な言葉で書いて大丈夫です。</p><div id="writing-guide-content" class="writing-guide-content"></div></details>
     <label class="field-label">どんなアイデア？<textarea id="idea-description" rows="3" placeholder="思いついたことを、自由に書いてみよう"></textarea></label>
     <label class="field-label">誰の、どんな困りごとを解決する？<textarea id="idea-problem" rows="2" placeholder="自分や誰かが感じている不便・願い"></textarea></label>
     <label class="field-label">実現したら、どうなる？<textarea id="idea-impact" rows="2" placeholder="このアイデアが形になったときに起きること"></textarea></label>
@@ -95,6 +96,6 @@
   <dialog id="settings-dialog" class="modal small-modal"><div class="modal-head"><div><div class="eyebrow">YOUR SPACE</div><h2>メニュー</h2></div><button type="button" class="icon-button" id="close-settings" aria-label="閉じる">×</button></div><p class="settings-note">アイデアはこの端末のブラウザに保存されます。別の端末へ移すときは、データを書き出してください。</p><div class="settings-actions"><button class="secondary-button" id="settings-export" type="button">⇩ データを書き出す</button><button class="secondary-button" id="settings-import" type="button">⇧ データを読み込む</button><button class="secondary-button" id="settings-collection" type="button">＋ コレクションを追加</button></div></dialog>
   <input type="file" id="file-input" accept="application/json,.json" hidden>
   <div id="toast" role="status" class="toast"></div>
-  <script src="app.js?v=13"></script>
+  <script src="app.js?v=14"></script>
 </body>
 </html>
