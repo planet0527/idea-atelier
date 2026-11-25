@@ -56,3 +56,5 @@
   .view{padding-inline:12px}.filter{padding-inline:9px}.section-heading{align-items:flex-start}.section-heading p{max-width:170px}
   .modal-actions{gap:8px}.modal-actions .primary-button,.modal-actions .secondary-button{padding-inline:12px}
 }
+
+.clear-search{flex:0 0 30px;width:30px;height:30px;border:0;border-radius:5px;background:transparent;color:#8b8e85;font-size:19px;line-height:1;cursor:pointer}.clear-search:hover{background:#eff0e9;color:#425d48}.clear-search[hidden]{display:none}@media(max-width:760px){.clear-search{flex-basis:40px;width:40px;height:40px;font-size:22px}}
