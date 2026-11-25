@@ -88,3 +88,6 @@
 @media(max-width:760px){.writing-guide{padding:10px}.writing-guide summary{min-height:44px;font-size:13px}.writing-guide-note{font-size:11px}.writing-example{padding:9px}.writing-example b{font-size:11px}.writing-example p{font-size:12px}}
 
 .duplicate-button{white-space:nowrap;color:#58735d}.duplicate-button:hover{text-decoration:underline}
+
+.install-tip{display:grid;gap:5px;margin:0 0 15px;padding:11px 12px;border:1px solid #e5e9e0;border-radius:8px;background:#f3f5f0}.install-tip b{font-size:10px;color:#586c56}.install-tip span{font-size:9px;line-height:1.7;color:#81877d}
+@media(max-width:760px){.install-tip{padding:12px}.install-tip b{font-size:12px}.install-tip span{font-size:11px}}
