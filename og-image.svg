@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<rect width="1200" height="630" fill="#f7f6f2"/>
+<circle cx="1004" cy="142" r="179" fill="#e9eee8"/>
+<circle cx="1004" cy="142" r="129" fill="none" stroke="#cfd9ce" stroke-width="2"/>
+<circle cx="1004" cy="142" r="94" fill="none" stroke="#d9e1d7" stroke-width="2"/>
+<path d="M975 143h58M1004 114v58M984 123l40 40M1024 123l-40 40" stroke="#54745b" stroke-width="5" stroke-linecap="round"/>
+<circle cx="888" cy="211" r="7" fill="#c58c64"/>
+<text x="88" y="112" fill="#607562" font-family="Arial,sans-serif" font-size="22" font-weight="700" letter-spacing="7">IDEA ATELIER</text>
+<text x="88" y="232" fill="#282b29" font-family="'Noto Sans JP',sans-serif" font-size="62" font-weight="600">思いつきを、</text>
+<text x="88" y="316" fill="#476953" font-family="'Noto Sans JP',sans-serif" font-size="62" font-weight="600">実現できる形へ。</text>
+<text x="91" y="382" fill="#777b73" font-family="'Noto Sans JP',sans-serif" font-size="25">ひらめきを記録して、実現への小さな一歩を育てるアイデア帳。</text>
+<rect x="88" y="470" width="190" height="48" rx="24" fill="#e9eee8"/>
+<text x="116" y="501" fill="#476953" font-family="'Noto Sans JP',sans-serif" font-size="19" font-weight="600">アイデア帳アプリ</text>
+<text x="88" y="572" fill="#9a9c93" font-family="Arial,sans-serif" font-size="16" letter-spacing="2">IDEAS, IN MOTION</text>
+</svg>
