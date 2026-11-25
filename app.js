@@ -31,7 +31,7 @@
     if(currentView==='shared')ideas=ideas.filter(x=>x.shared);
     if(collectionFilter)ideas=ideas.filter(x=>x.collection===collectionFilter);
     if(currentFilter!=='all')ideas=ideas.filter(x=>x.status===currentFilter);
-    if(query)ideas=ideas.filter(x=>[x.name,x.description,x.problem,x.impact,x.category].join(' ').toLowerCase().includes(query));
+    if(query)ideas=ideas.filter(x=>[x.name,x.description,x.problem,x.impact,x.step,x.needs,x.category,labels[x.status]].join(' ').toLowerCase().includes(query));
     ideas.sort((a,b)=>sortNewest?new Date(b.updated)-new Date(a.updated):new Date(a.updated)-new Date(b.updated));
     $('#idea-count').textContent=state.ideas.length;
     const navTitle=currentView==='favorites'?'お気に入り':currentView==='shared'?'共有したアイデア':collectionFilter?(state.collections.find(x=>x.id===collectionFilter)?.name||'コレクション'):'アイデア帳';
