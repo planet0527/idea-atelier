@@ -31,9 +31,9 @@
     if(currentView==='shared')ideas=ideas.filter(x=>x.shared);
     if(collectionFilter)ideas=ideas.filter(x=>x.collection===collectionFilter);
     if(currentFilter!=='all')ideas=ideas.filter(x=>x.status===currentFilter);
-    if(query)ideas=ideas.filter(x=>[x.name,x.description,x.problem,x.impact,x.step,x.needs,x.category,labels[x.status]].join(' ').toLowerCase().includes(query));
+    if(query)ideas=ideas.filter(x=>{const collectionName=state.collections.find(c=>c.id===x.collection)?.name||'';return [x.name,x.description,x.problem,x.impact,x.step,x.needs,x.category,labels[x.status],collectionName].join(' ').toLowerCase().includes(query);});
     ideas.sort((a,b)=>sortNewest?new Date(b.updated)-new Date(a.updated):new Date(a.updated)-new Date(b.updated));
-    $('#idea-count').textContent=state.ideas.length;
+    $('#idea-count').textContent=state.ideas.length;$('#result-count').textContent=`${ideas.length}件`;$('#result-count').setAttribute('aria-label',`全${state.ideas.length}件中 ${ideas.length}件を表示`);
     const navTitle=currentView==='favorites'?'お気に入り':currentView==='shared'?'共有したアイデア':collectionFilter?(state.collections.find(x=>x.id===collectionFilter)?.name||'コレクション'):'アイデア帳';
     $('#crumb-label').textContent=navTitle;$('#list-heading').textContent=collectionFilter?navTitle:currentView==='favorites'?'お気に入りのアイデア':currentView==='shared'?'共有したアイデア':currentFilter==='all'?'すべてのアイデア':labels[currentFilter]+'アイデア';
     $('#list-subtitle').textContent=currentView==='shared'?'これまでに共有リンクを作ったアイデア。':'思いついたことを、忘れないうちに。';
