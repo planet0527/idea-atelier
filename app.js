@@ -6,7 +6,7 @@
   const $ = s => document.querySelector(s);
   const $$ = s => [...document.querySelectorAll(s)];
   const state = loadState();
-  let currentView = 'all', currentFilter = 'all', collectionFilter = '', activeIdea = null, sortNewest = true, toastTimer, ideaBaseline = '';
+  let currentView = 'all', currentFilter = 'all', collectionFilter = '', activeIdea = null, sortNewest = true, toastTimer, undoDeletionTimer, pendingDeletion = null, ideaBaseline = '';
 
   function loadState(){
     try { const saved=JSON.parse(localStorage.getItem(STORE)); if(saved && Array.isArray(saved.ideas)) return {ideas:saved.ideas,collections:Array.isArray(saved.collections)?saved.collections:[]}; } catch(e){}
@@ -16,7 +16,12 @@
   function id(){return globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;}
   function escapeHtml(v=''){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
   function dateText(v){if(!v)return '';return new Intl.DateTimeFormat('ja-JP',{month:'numeric',day:'numeric'}).format(new Date(v));}
-  function toast(text){const el=$('#toast');el.textContent=text;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2200);}
+  function toast(text,action=null,duration=2200){
+    const el=$('#toast');el.replaceChildren();const message=document.createElement('span');message.textContent=text;el.append(message);
+    if(action){const button=document.createElement('button');button.type='button';button.className='toast-action';button.textContent=action.label;button.addEventListener('click',()=>{clearTimeout(toastTimer);el.classList.remove('show','has-action');action.run();});el.append(button);}
+    el.classList.toggle('has-action',!!action);el.classList.add('show');clearTimeout(toastTimer);
+    toastTimer=setTimeout(()=>{el.classList.remove('show','has-action');el.replaceChildren();},duration);
+  }
   function renderCollections(){
     const wrap=$('#collections');wrap.innerHTML='';
     state.collections.forEach(c=>{const b=document.createElement('button');b.className='collection-link';b.innerHTML=`<i></i>${escapeHtml(c.name)}`;b.addEventListener('click',()=>{collectionFilter=c.id;currentView='all';setActiveNav();render();});wrap.append(b);});
@@ -67,7 +72,20 @@
     const item={id:old?.id||id(),name:$('#idea-name').value.trim(),category:$('#idea-category').value,status:$('#idea-status').value,description:$('#idea-description').value.trim(),problem:$('#idea-problem').value.trim(),impact:$('#idea-impact').value.trim(),step:$('#idea-step').value.trim(),needs:$('#idea-needs').value.trim(),favorite:$('#idea-favorite').checked,collection:$('#idea-collection').value,shared:!!old?.shared,created:old?.created||now,updated:now};
     if(old)Object.assign(old,item);else state.ideas.unshift(item);persist();closeDialog('#idea-dialog');render();toast(old?'アイデアを更新しました':'アイデアを記録しました');
   }
-  function deleteIdea(){const item=state.ideas.find(x=>x.id===activeIdea);if(!item)return;if(!confirm(`「${item.name}」を削除しますか？`))return;state.ideas=state.ideas.filter(x=>x.id!==activeIdea);persist();closeDialog('#idea-dialog');render();toast('アイデアを削除しました');}
+  function deleteIdea(){
+    const index=state.ideas.findIndex(x=>x.id===activeIdea),item=state.ideas[index];if(!item)return;
+    if(!confirm(`「${item.name}」を削除しますか？`))return;
+    if(undoDeletionTimer)clearTimeout(undoDeletionTimer);
+    state.ideas.splice(index,1);pendingDeletion={item,index};persist();closeDialog('#idea-dialog');render();
+    undoDeletionTimer=setTimeout(()=>{pendingDeletion=null;undoDeletionTimer=null;},7000);
+    toast('アイデアを削除しました',{label:'元に戻す',run:undoDeletedIdea},7000);
+  }
+  function undoDeletedIdea(){
+    if(!pendingDeletion)return;
+    const {item,index}=pendingDeletion;
+    if(!state.ideas.some(x=>x.id===item.id)){state.ideas.splice(Math.min(index,state.ideas.length),0,item);persist();render();toast('削除を取り消しました');}
+    pendingDeletion=null;if(undoDeletionTimer)clearTimeout(undoDeletionTimer);undoDeletionTimer=null;
+  }
   function openShare(item){activeIdea=item.id;$('#share-link-field').hidden=true;$('#share-link-output').value='';$('#share-feedback').textContent='';$('#share-title').value=item.name;$('#share-alias').value='';$('#share-area').value='';$('#share-redactions').value='';$('#share-mask-contacts').checked=true;$('#share-show-alias').checked=false;$('#share-show-area').checked=false;$$('[data-share]').forEach(c=>c.checked=['description','problem','impact','step','meta'].includes(c.dataset.share));$('#share-dialog').showModal();updatePreview();}
   function redact(value){
     let text=String(value||'');
