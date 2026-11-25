@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="googlebot" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#f7f6f2">
+  <title>Idea Atelier — 思いつきを、実現できる形へ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#home" aria-label="Idea Atelier ホーム">
+        <span class="brand-mark">i<span>✳</span></span>
+        <span><b>idea atelier</b><small>IDEAS, IN MOTION</small></span>
+      </a>
+      <div class="side-label">YOUR WORKSPACE</div>
+      <nav class="side-nav" aria-label="メインナビゲーション">
+        <button class="nav-item active" data-view="all"><span>▦</span> アイデア帳 <em id="idea-count">0</em></button>
+        <button class="nav-item" data-view="favorites"><span>♡</span> お気に入り</button>
+        <button class="nav-item" data-view="shared"><span>↗</span> 共有したアイデア</button>
+      </nav>
+      <div class="side-label collection-label">COLLECTIONS <button id="add-collection" title="コレクションを追加">＋</button></div>
+      <div id="collections" class="collections"></div>
+      <div class="sidebar-bottom">
+        <div class="privacy-note"><span>◉</span><div><b>あなたのアイデアは非公開</b><small>共有するまで、ここだけに保存</small></div></div>
+        <button class="nav-item" id="export-data"><span>⇩</span> データを書き出す</button>
+        <button class="nav-item" id="import-data"><span>⇧</span> データを読み込む</button>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="breadcrumb">MY SPACE <span>/</span> <b id="crumb-label">アイデア帳</b></div>
+        <div class="top-actions"><span class="local-indicator"><i></i> この端末に保存中</span><button class="avatar" title="プロフィール設定">ね</button></div>
+      </header>
+      <section id="home-view" class="view">
+        <div class="welcome-row">
+          <div><div class="eyebrow">YOUR IDEA COLLECTION</div><h1>思いつきを、<br><span>実現できる形へ。</span></h1><p class="intro">まだ小さなひらめきも、ここから少しずつ育てよう。</p></div>
+          <div class="hero-doodle" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="spark">✳</div><div class="tiny-star">✦</div><div class="dot"></div></div>
+        </div>
+        <div class="toolbar"><div class="filters"><button class="filter active" data-filter="all">すべて</button><button class="filter" data-filter="seed">芽が出た</button><button class="filter" data-filter="growing">育て中</button><button class="filter" data-filter="ready">実現したい</button><button class="filter" data-filter="done">実現した</button></div><div class="toolbar-right"><label class="search-box"><span>⌕</span><input id="search" type="search" placeholder="アイデアを検索"></label><button class="primary-button" id="new-idea"><span>＋</span> アイデアを記録</button></div></div>
+        <div class="section-heading"><div><h2 id="list-heading">すべてのアイデア</h2><p id="list-subtitle">思いついたことを、忘れないうちに。</p></div><button class="sort-button" id="sort-button">最近更新した順⌄</button></div>
+        <div id="idea-grid" class="idea-grid"></div>
+        <div id="empty-state" class="empty-state" hidden><div class="empty-art">✳</div><h3>最初のひらめきを書き留めよう</h3><p>まとまっていなくても大丈夫。あとから一緒に形にできます。</p><button class="primary-button" id="empty-new">＋ アイデアを記録</button></div>
+        <footer class="page-footer"><span>IDEA ATELIER</span><span>小さな一歩から、未来をつくる。</span></footer>
+      </section>
+      <section id="shared-view" class="view shared-view" hidden>
+        <div class="shared-header"><div class="eyebrow">A LITTLE IDEA, READY TO GROW</div><h1 id="shared-title"></h1><p id="shared-owner"></p></div>
+        <div id="shared-content" class="shared-content"></div>
+        <div class="shared-footer"><span>idea atelier</span><span>アイデアを、誰かと育てる。</span></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="idea-dialog" class="modal"><form id="idea-form" method="dialog">
+    <div class="modal-head"><div><div class="eyebrow">CAPTURE A THOUGHT</div><h2 id="form-title">アイデアを記録する</h2></div><button type="button" class="icon-button close-dialog" aria-label="閉じる">×</button></div>
+    <input type="hidden" id="idea-id">
+    <label class="field-label">アイデアの名前 <span>必須</span><input id="idea-name" maxlength="80" required placeholder="例：気持ちを言葉にする小さなアプリ"></label>
+    <div class="form-grid"><label class="field-label">カテゴリー<select id="idea-category"><option>アプリ・Web</option><option>作品・創作</option><option>暮らし</option><option>イベント</option><option>学び</option><option>その他</option></select></label><label class="field-label">今の状態<select id="idea-status"><option value="seed">芽が出た</option><option value="growing">育て中</option><option value="ready">実現したい</option><option value="done">実現した</option></select></label></div>
+    <label class="field-label">どんなアイデア？<textarea id="idea-description" rows="3" placeholder="思いついたことを、自由に書いてみよう"></textarea></label>
+    <label class="field-label">誰の、どんな困りごとを解決する？<textarea id="idea-problem" rows="2" placeholder="自分や誰かが感じている不便・願い"></textarea></label>
+    <label class="field-label">実現したら、どうなる？<textarea id="idea-impact" rows="2" placeholder="このアイデアが形になったときに起きること"></textarea></label>
+    <details class="plan-details"><summary>実現への小さな一歩を考える <span>任意</span></summary><label class="field-label">まず試してみること<input id="idea-step" maxlength="150" placeholder="例：使う人になりそうな友達に話を聞く"></label><label class="field-label">必要なもの・協力してほしいこと<textarea id="idea-needs" rows="2" placeholder="スキル、道具、仲間、予算など"></textarea></label></details>
+    <div class="form-bottom"><label class="collection-select">コレクション<select id="idea-collection"><option value="">未分類</option></select></label><label class="favorite-check"><input type="checkbox" id="idea-favorite"> お気に入り</label></div>
+    <div class="modal-actions"><button type="button" class="text-button delete-button" id="delete-idea" hidden>削除</button><span></span><button type="button" class="secondary-button close-dialog">キャンセル</button><button class="primary-button" type="submit">保存する</button></div>
+  </form></dialog>
+
+  <dialog id="share-dialog" class="modal share-modal"><div class="modal-head"><div><div class="eyebrow">SHARE WITH CARE</div><h2>共有する内容を選ぶ</h2><p class="modal-lead">選んだ項目だけを共有データに入れます。名前や場所などは初期状態で非公開です。</p></div><button type="button" class="icon-button close-share" aria-label="閉じる">×</button></div>
+    <div class="share-layout"><div class="share-settings"><div class="share-personal"><div class="share-section-title"><span>01</span><div><b>あなたの情報</b><small>個人情報は必要な範囲だけ公開できます</small></div></div><label class="field-label">共有用タイトル <input id="share-title" maxlength="80"></label><label class="field-label">表示名 <input id="share-alias" maxlength="30" placeholder="匿名で共有"></label><label class="field-label">活動エリア <input id="share-area" maxlength="40" placeholder="未入力なら表示しません"></label><label class="field-label">ぼかしたい言葉 <input id="share-redactions" maxlength="180" placeholder="名前、学校名、職場名などをカンマ区切りで"></label><label class="toggle-line"><span><b>表示名を共有する</b><small>オフなら「匿名のアイデア」と表示します</small></span><input id="share-show-alias" type="checkbox"></label><label class="toggle-line"><span><b>活動エリアを共有する</b><small>市区町村など細かい場所は避けてください</small></span><input id="share-show-area" type="checkbox"></label><label class="toggle-line"><span><b>連絡先らしい文字列をぼかす</b><small>メールアドレス・電話番号・URLを伏せます</small></span><input id="share-mask-contacts" type="checkbox" checked></label></div>
+    <div class="share-sections"><div class="share-section-title"><span>02</span><div><b>アイデアの内容</b><small>共有する項目を選んでください</small></div></div><label class="toggle-line"><span><b>アイデアの説明</b></span><input type="checkbox" data-share="description" checked></label><label class="toggle-line"><span><b>解決したいこと</b></span><input type="checkbox" data-share="problem" checked></label><label class="toggle-line"><span><b>実現したときのイメージ</b></span><input type="checkbox" data-share="impact" checked></label><label class="toggle-line"><span><b>最初の一歩</b><small>実現に向けたヒントを共有</small></span><input type="checkbox" data-share="step" checked></label><label class="toggle-line"><span><b>必要なもの・協力</b></span><input type="checkbox" data-share="needs"></label><label class="toggle-line"><span><b>カテゴリーと進捗</b></span><input type="checkbox" data-share="meta" checked></label></div><div class="share-warning"><span>✳</span><p>共有内容には入力した文章がそのまま含まれます。名前・学校・職場・連絡先などを書いていないか、プレビューで確認してください。</p></div></div>
+    <div class="preview-wrap"><div class="preview-label">共有プレビュー</div><div id="share-preview" class="share-preview"></div><div class="share-actions"><button class="secondary-button" id="copy-share" type="button">共有リンクをコピー</button><button class="text-button" id="download-share" type="button">リンクが使えない場合：共有データを保存</button></div><div id="share-feedback" class="share-feedback" aria-live="polite"></div></div></div>
+  </dialog>
+  <dialog id="collection-dialog" class="modal small-modal"><form id="collection-form" method="dialog"><div class="modal-head"><h2>コレクションを追加</h2><button type="button" class="icon-button close-collection">×</button></div><label class="field-label">名前<input id="collection-name" required maxlength="24" placeholder="例：いつか作りたい"></label><div class="modal-actions"><span></span><button type="button" class="secondary-button close-collection">キャンセル</button><button class="primary-button">追加する</button></div></form></dialog>
+  <input type="file" id="file-input" accept="application/json,.json" hidden>
+  <div id="toast" role="status" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
