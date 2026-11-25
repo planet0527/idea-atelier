@@ -6,7 +6,7 @@
   const $ = s => document.querySelector(s);
   const $$ = s => [...document.querySelectorAll(s)];
   const state = loadState();
-  let currentView = 'all', currentFilter = 'all', collectionFilter = '', activeIdea = null, sortNewest = true, toastTimer;
+  let currentView = 'all', currentFilter = 'all', collectionFilter = '', activeIdea = null, sortNewest = true, toastTimer, ideaBaseline = '';
 
   function loadState(){
     try { const saved=JSON.parse(localStorage.getItem(STORE)); if(saved && Array.isArray(saved.ideas)) return {ideas:saved.ideas,collections:Array.isArray(saved.collections)?saved.collections:[]}; } catch(e){}
@@ -41,7 +41,7 @@
     ideas.forEach(item=>{
       const card=document.createElement('article');card.className='idea-card';card.tabIndex=0;card.setAttribute('aria-label',item.name+'を編集');
       const short=(item.description||item.problem||'まだ説明はありません。').replace(/\s+/g,' ').trim();
-      card.innerHTML=`<div class="card-top"><span class="category-pill ${colors[item.category]||''}">${escapeHtml(item.category||'その他')}</span><button class="favorite-button ${item.favorite?'on':''}" aria-label="お気に入り">${item.favorite?'♥':'♡'}</button></div><h3>${escapeHtml(item.name)}</h3><p class="card-desc">${escapeHtml(short)}</p><div class="card-bottom"><span class="status ${escapeHtml(item.status)}">${labels[item.status]||'芽が出た'}</span><span class="card-date">${dateText(item.updated)}</span></div><button class="card-share" aria-label="共有設定">↗ ${item.shared?'共有済み':'共有する'}</button>`;
+      card.innerHTML=`<div class="card-top"><span class="category-pill ${colors[item.category]||''}">${escapeHtml(item.category||'その他')}</span><button class="favorite-button ${item.favorite?'on':''}" aria-label="${item.favorite?'お気に入りから外す':'お気に入りに追加'}">${item.favorite?'♥':'♡'}</button></div><h3>${escapeHtml(item.name)}</h3><p class="card-desc">${escapeHtml(short)}</p>${item.step?`<p class="card-step"><b>次の一歩</b><span>${escapeHtml(item.step)}</span></p>`:''}<div class="card-bottom"><span class="status ${escapeHtml(item.status)}">${labels[item.status]||'芽が出た'}</span><span class="card-date">${dateText(item.updated)}</span></div><button class="card-share" aria-label="共有設定">↗ ${item.shared?'共有済み':'共有する'}</button>`;
       card.addEventListener('click',e=>{if(e.target.closest('.favorite-button')){e.stopPropagation();item.favorite=!item.favorite;persist();render();return;}if(e.target.closest('.card-share')){e.stopPropagation();openShare(item);return;}openIdea(item.id);});
       card.addEventListener('keydown',e=>{if(e.target!==card)return;if(e.key==='Enter'||e.key===' '){e.preventDefault();openIdea(item.id);}});
       grid.append(card);
@@ -56,10 +56,12 @@
   function openIdea(ideaId=null){
     const item=ideaId?state.ideas.find(x=>x.id===ideaId):null;activeIdea=item?.id||null;
     $('#form-title').textContent=item?'アイデアを編集する':'アイデアを記録する';$('#idea-id').value=item?.id||'';
-    $('#idea-name').value=item?.name||'';$('#idea-category').value=item?.category||'アプリ・Web';$('#idea-status').value=item?.status||'seed';$('#idea-description').value=item?.description||'';$('#idea-problem').value=item?.problem||'';$('#idea-impact').value=item?.impact||'';$('#idea-step').value=item?.step||'';$('#idea-needs').value=item?.needs||'';$('#idea-favorite').checked=!!item?.favorite;$('#idea-collection').value=item?.collection||'';$('#delete-idea').hidden=!item;
+    $('#idea-name').value=item?.name||'';$('#idea-category').value=item?.category||'アプリ・Web';$('#idea-status').value=item?.status||'seed';$('#idea-description').value=item?.description||'';$('#idea-problem').value=item?.problem||'';$('#idea-impact').value=item?.impact||'';$('#idea-step').value=item?.step||'';$('#idea-needs').value=item?.needs||'';$('#idea-favorite').checked=!!item?.favorite;$('#idea-collection').value=item?.collection||'';$('#delete-idea').hidden=!item;ideaBaseline=ideaFormSnapshot();
     $('#idea-dialog').showModal();
   }
   function closeDialog(sel){$(sel).close();}
+  function ideaFormSnapshot(){return JSON.stringify({name:$('#idea-name').value,category:$('#idea-category').value,status:$('#idea-status').value,description:$('#idea-description').value,problem:$('#idea-problem').value,impact:$('#idea-impact').value,step:$('#idea-step').value,needs:$('#idea-needs').value,collection:$('#idea-collection').value,favorite:$('#idea-favorite').checked});}
+  function closeIdeaDialog(){if(ideaFormSnapshot()!==ideaBaseline&&!confirm('保存していない変更があります。破棄して閉じますか？'))return;closeDialog('#idea-dialog');}
   function saveIdea(e){
     e.preventDefault();const old=state.ideas.find(x=>x.id===$('#idea-id').value);const now=new Date().toISOString();
     const item={id:old?.id||id(),name:$('#idea-name').value.trim(),category:$('#idea-category').value,status:$('#idea-status').value,description:$('#idea-description').value.trim(),problem:$('#idea-problem').value.trim(),impact:$('#idea-impact').value.trim(),step:$('#idea-step').value.trim(),needs:$('#idea-needs').value.trim(),favorite:$('#idea-favorite').checked,collection:$('#idea-collection').value,shared:!!old?.shared,created:old?.created||now,updated:now};
@@ -109,7 +111,7 @@
   $$('.nav-item[data-view]').forEach(b=>b.addEventListener('click',()=>{currentView=b.dataset.view;collectionFilter='';setActiveNav();render();}));
   $$('.filter').forEach(b=>b.addEventListener('click',()=>{currentFilter=b.dataset.filter;setActiveNav();render();}));
   $('#new-idea').addEventListener('click',()=>openIdea());$('#empty-new').addEventListener('click',()=>openIdea());$('#idea-form').addEventListener('submit',saveIdea);
-  $$('.close-dialog').forEach(b=>b.addEventListener('click',()=>closeDialog('#idea-dialog')));$('#delete-idea').addEventListener('click',deleteIdea);
+  $('.close-dialog').forEach(b=>b.addEventListener('click',closeIdeaDialog));$('#idea-dialog').addEventListener('cancel',e=>{e.preventDefault();closeIdeaDialog();});$('#delete-idea').addEventListener('click',deleteIdea);
   $('#search').addEventListener('input',render);$('#mobile-collection-filter').addEventListener('change',e=>{collectionFilter=e.target.value;currentView='all';setActiveNav();render();});$('#mobile-add-collection').addEventListener('click',()=>$('#collection-dialog').showModal());$('#empty-reset').addEventListener('click',()=>{$('#search').value='';currentView='all';currentFilter='all';collectionFilter='';setActiveNav();render();});$('.avatar').addEventListener('click',()=>$('#settings-dialog').showModal());$('#close-settings').addEventListener('click',()=>$('#settings-dialog').close());$('#settings-export').addEventListener('click',()=>{$('#settings-dialog').close();exportData();});$('#settings-import').addEventListener('click',()=>{$('#settings-dialog').close();$('#file-input').click();});$('#settings-collection').addEventListener('click',()=>{$('#settings-dialog').close();$('#collection-dialog').showModal();});$('#sort-button').addEventListener('click',()=>{sortNewest=!sortNewest;$('#sort-button').textContent=sortNewest?'最近更新した順⌄':'古い順⌃';render();});
   $('#add-collection').addEventListener('click',()=>$('#collection-dialog').showModal());$$('.close-collection').forEach(b=>b.addEventListener('click',()=>$('#collection-dialog').close()));$('#collection-form').addEventListener('submit',addCollection);
   $('#export-data').addEventListener('click',exportData);$('#import-data').addEventListener('click',()=>$('#file-input').click());$('#file-input').addEventListener('change',e=>{if(e.target.files[0])importData(e.target.files[0]);e.target.value='';});
