@@ -23,3 +23,5 @@
   .empty-state .secondary-button{margin-left:5px}
 }
 @media(max-width:430px){.mobile-collection-tools{margin-top:-8px}}
+
+.card-step{display:flex;align-items:flex-start;gap:7px;margin:11px 0 0;padding:8px 9px;border-radius:7px;background:#f1f4ee;color:#5f6e5d;font-size:9px;line-height:1.6}.card-step b{flex:0 0 auto;font-size:8px;color:#71856f}.card-step span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal}.idea-card:has(.card-step){min-height:202px}
