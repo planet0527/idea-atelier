@@ -6,6 +6,11 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="googlebot" content="noindex,nofollow,noarchive">
   <meta name="theme-color" content="#f7f6f2">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Idea Atelier">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icon.svg">
   <meta name="description" content="Idea Atelierは、思いつきを記録して実現への小さな一歩を育てるアイデア帳です。共有する内容や表示名を選んで、友達とアイデアをシェアできます。">
   <link rel="canonical" href="https://planet0527.github.io/idea-atelier/">
   <meta property="og:type" content="website">
@@ -23,7 +28,7 @@
   <meta name="twitter:description" content="ひらめきを記録して、実現への小さな一歩を育てるアイデア帳。">
   <meta name="twitter:image" content="https://planet0527.github.io/idea-atelier/og-image.svg">
   <title>Idea Atelier — 思いつきを、実現できる形へ</title>
-  <link rel="stylesheet" href="style.css?v=18">
+  <link rel="stylesheet" href="style.css?v=19">
 </head>
 <body>
   <div class="app-shell">
@@ -93,9 +98,9 @@
     <div class="preview-wrap"><div class="preview-label">共有プレビュー</div><div id="share-preview" class="share-preview"></div><div class="share-actions"><button class="secondary-button" id="copy-share" type="button">共有リンクをコピー</button><button class="secondary-button" id="copy-share-text" type="button">共有文をコピー</button><button class="text-button" id="download-share" type="button">リンクが使えない場合：共有データを保存</button></div><div id="share-output-field" class="share-link-field" hidden><label for="share-output" id="share-output-label">コピー用テキスト（長押ししてコピーできます）</label><textarea id="share-output" rows="4" readonly aria-label="コピー用テキスト"></textarea></div><div id="share-feedback" class="share-feedback" aria-live="polite"></div></div></div>
   </dialog>
   <dialog id="collection-dialog" class="modal small-modal"><form id="collection-form" method="dialog"><div class="modal-head"><h2>コレクションを追加</h2><button type="button" class="icon-button close-collection">×</button></div><label class="field-label">名前<input id="collection-name" required maxlength="24" placeholder="例：いつか作りたい"></label><div class="modal-actions"><span></span><button type="button" class="secondary-button close-collection">キャンセル</button><button class="primary-button">追加する</button></div></form></dialog>
-  <dialog id="settings-dialog" class="modal small-modal"><div class="modal-head"><div><div class="eyebrow">YOUR SPACE</div><h2>メニュー</h2></div><button type="button" class="icon-button" id="close-settings" aria-label="閉じる">×</button></div><p class="settings-note">アイデアはこの端末のブラウザに保存されます。別の端末へ移すときは、データを書き出してください。</p><div class="settings-actions"><button class="secondary-button" id="settings-export" type="button">⇩ データを書き出す</button><button class="secondary-button" id="settings-import" type="button">⇧ データを読み込む</button><button class="secondary-button" id="settings-collection" type="button">＋ コレクションを追加</button></div></dialog>
+  <dialog id="settings-dialog" class="modal small-modal"><div class="modal-head"><div><div class="eyebrow">YOUR SPACE</div><h2>メニュー</h2></div><button type="button" class="icon-button" id="close-settings" aria-label="閉じる">×</button></div><p class="settings-note">アイデアはこの端末のブラウザに保存されます。別の端末へ移すときは、データを書き出してください。</p><div class="install-tip"><b>スマホのホーム画面に追加</b><span>iPhoneはSafariの共有メニュー、AndroidはChromeのメニューから「ホーム画面に追加」を選ぶと、アプリのように開けます。</span></div><div class="settings-actions"><button class="secondary-button" id="settings-export" type="button">⇩ データを書き出す</button><button class="secondary-button" id="settings-import" type="button">⇧ データを読み込む</button><button class="secondary-button" id="settings-collection" type="button">＋ コレクションを追加</button></div></dialog>
   <input type="file" id="file-input" accept="application/json,.json" hidden>
   <div id="toast" role="status" class="toast"></div>
-  <script src="app.js?v=15"></script>
+  <script src="app.js?v=16"></script>
 </body>
 </html>
