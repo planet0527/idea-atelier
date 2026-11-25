@@ -36,7 +36,7 @@
     if(currentView==='shared')ideas=ideas.filter(x=>x.shared);
     if(collectionFilter)ideas=ideas.filter(x=>x.collection===collectionFilter);
     if(currentFilter!=='all')ideas=ideas.filter(x=>x.status===currentFilter);
-    if(query)ideas=ideas.filter(x=>{const collectionName=state.collections.find(c=>c.id===x.collection)?.name||'';return [x.name,x.description,x.problem,x.impact,x.step,x.needs,x.category,labels[x.status],collectionName].join(' ').toLowerCase().includes(query);});
+    if(query)ideas=ideas.filter(x=>{const collectionName=state.collections.find(c=>c.id===x.collection)?.name||'';const taskText=(Array.isArray(x.tasks)?x.tasks:[]).map(task=>task?.text||'').join(' ');const noteText=(Array.isArray(x.notes)?x.notes:[]).map(note=>note?.text||'').join(' ');return [x.name,x.description,x.problem,x.impact,x.step,x.needs,taskText,noteText,x.category,labels[x.status],collectionName].join(' ').toLowerCase().includes(query);});
     ideas.sort((a,b)=>sortNewest?new Date(b.updated)-new Date(a.updated):new Date(a.updated)-new Date(b.updated));
     $('#idea-count').textContent=state.ideas.length;$('#result-count').textContent=`${ideas.length}件`;$('#result-count').setAttribute('aria-label',`全${state.ideas.length}件中 ${ideas.length}件を表示`);
     const navTitle=currentView==='favorites'?'お気に入り':currentView==='shared'?'共有したアイデア':collectionFilter?(state.collections.find(x=>x.id===collectionFilter)?.name||'コレクション'):'アイデア帳';
